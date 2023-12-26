@@ -6,23 +6,24 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    // Database Connection
+    // Mengkoneksikan Database
     private static final String JDBC_URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
     private static final String JDBC_USER = "sa";
     private static final String JDBC_PASSWORD = "";
 
-        private static List<Barang> barangList = new ArrayList<>();
+    //Membuat ArrayList
+    private static List<Barang> barangList = new ArrayList<>();
 
     private static Connection connection;
     public static void main(String[] args) {
         try {
 
-            // Initialize the database
+            // inisialisasi database
             initDatabase();
 
-            // Get admin choice
+            // Pilihan untuk CRUD yang bisa dilakukan oleh admin
             System.out.println("======================================");
-            System.out.println("PILIH OPERASI ADMIN:");
+            System.out.println("PILIH PENGINPUTAN");
             System.out.println("1. CREATE");
             System.out.println("2. UPDATE");
             System.out.println("3. DELETE");
@@ -49,20 +50,21 @@ public class App {
                         readBarang(scanner);
                         break;
                     case 5:
-                        System.out.println("Operasi selesai.");
+                        System.out.println("Penginputan selesai.");
                         break;
                     default:
                         System.out.println("Pilihan tidak valid");
                 }
 
                 if (adminChoice == 5) {
-                    break; // Exit the loop if "SELESAI" is chosen
+                    break; // loop akan keluar jika admin memilih 5 (selesai)
                 }
             }
             System.out.println("======================================");
             System.out.println("     kode, nama, dan harga barang");
             System.out.println("--------------------------------------");
             
+            //untuk memanggil barang yang sudah diinputkan dan disimpan di ArrayList tadi
             for (Barang barang : barangList) {
                 System.out.println(barang.getKode() + " " + barang.getNama() + " = " + barang.getHarga());
             }
@@ -71,7 +73,7 @@ public class App {
             System.out.println(" ");
             System.out.println("SILAHKAN MASUKKAN DETAIL BELANJA");
             System.out.println(" ");
-            
+
             scanner.nextLine();
 
             // Input data pelanggan
