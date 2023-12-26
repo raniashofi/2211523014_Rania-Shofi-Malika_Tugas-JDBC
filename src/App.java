@@ -107,11 +107,12 @@ public class App {
         } catch (Exception e) {
             System.out.println("Terjadi kesalahan: " + e.getMessage());
         } finally {
-            // Close the database connection
+            // Menutup koneksi databse
             closeDatabase();
         }
     }
 
+    //method membuat barang
     private static void createBarang(Scanner scanner) throws SQLException {
         while (true) {
             System.out.println("======================================");
@@ -123,7 +124,7 @@ public class App {
             System.out.print("Harga Barang: ");
             double harga = scanner.nextDouble();
     
-            // Insert data into the database
+            // Menambah data ke database
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO products VALUES (?, ?, ?)")) {
                 statement.setString(1, kode);
                 statement.setString(2, nama);
@@ -131,7 +132,7 @@ public class App {
                 statement.executeUpdate();
             }
     
-            // Add the new Barang to the list
+            // menambah barang baru ke List
             Barang newBarang = new Produk(kode, nama, harga);
             barangList.add(newBarang);
     
@@ -140,11 +141,12 @@ public class App {
             System.out.print("Apakah barang sudah selesai diinput? (Y/N): ");
             String selesaiInput = scanner.next().toUpperCase();
             if ("Y".equals(selesaiInput)) {
-                break; // Exit the loop if "Y" is entered
+                break; // exit dari loop saat diinput "Y"
             }
         }
     }
 
+    //method memperbarui barang
     private static void updateBarang(Scanner scanner) throws SQLException {
         while (true) {
             System.out.println("======================================");
@@ -154,7 +156,7 @@ public class App {
             System.out.print("Harga Baru: ");
             double newHarga = scanner.nextDouble();
     
-            // Update data in the database
+            // Update data di database
             try (PreparedStatement statement = connection.prepareStatement("UPDATE products SET harga = ? WHERE kode = ?")) {
                 statement.setDouble(1, newHarga);
                 statement.setString(2, kode);
@@ -163,7 +165,7 @@ public class App {
                 if (rowsAffected > 0) {
                     System.out.println("Harga barang berhasil diupdate.");
     
-                    // Update the corresponding Barang object in the list
+                    // Update data yg sesuai ke dalam List
                     for (Barang barang : barangList) {
                         if (barang.getKode().equals(kode)) {
                             barang.setHarga(newHarga);
@@ -178,11 +180,12 @@ public class App {
             System.out.print("Apakah barang sudah selesai diupdate? (Y/N): ");
             String selesaiUpdate = scanner.next().toUpperCase();
             if ("Y".equals(selesaiUpdate)) {
-                break; // Exit the loop if "Y" is entered
+                break; // exit dari loop saat diinput "Y"
             }
         }
     }
 
+    //method menghapus barang
     private static void deleteBarang(Scanner scanner) throws SQLException {
         while (true) {
             System.out.println("======================================");
@@ -190,7 +193,7 @@ public class App {
             System.out.print("Kode Barang: ");
             String kode = scanner.next();
     
-            // Delete data from the database
+            // menghapus data dari database
             try (PreparedStatement statement = connection.prepareStatement("DELETE FROM products WHERE kode = ?")) {
                 statement.setString(1, kode);
                 int rowsAffected = statement.executeUpdate();
@@ -198,7 +201,7 @@ public class App {
                 if (rowsAffected > 0) {
                     System.out.println("Barang berhasil dihapus.");
     
-                    // Remove the corresponding Barang object from the list
+                    // menghapus data yg sesuai ke dalam List
                     barangList.removeIf(barang -> barang.getKode().equals(kode));
                 } else {
                     System.out.println("Kode barang tidak ditemukan.");
@@ -209,24 +212,25 @@ public class App {
             System.out.print("Apakah barang sudah selesai dihapus? (Y/N): ");
             String selesaiHapus = scanner.next().toUpperCase();
             if ("Y".equals(selesaiHapus)) {
-                break; // Exit the loop if "Y" is entered
+                break; // exit dari loop saat diinput "Y"
             }
         }
     }
 
+    //method menampilkan barang
     private static void readBarang(Scanner scanner) throws SQLException {
         System.out.println("======================================");
-        System.out.println("READ BARANG");
+        System.out.println("MENAMPILKAN NAMA DAN HARGA BARANG");
     
         while (true) {
-            System.out.print("Kode Barang (type 'Y' to finish): ");
+            System.out.print("Masukkan Kode Barang (ketik 'Y' jika sudah selesai): ");
             String kode = scanner.next();
     
             if ("Y".equalsIgnoreCase(kode)) {
-                break; // Exit the loop if "Y" is entered
+                break; // exit dari loop saat diinput "Y"
             }
     
-            // Read data from the database
+            // Menampilkan data dari database
             try (PreparedStatement statement = connection.prepareStatement("SELECT nama, harga FROM products WHERE kode = ?")) {
                 statement.setString(1, kode);
                 ResultSet resultSet = statement.executeQuery();
@@ -243,6 +247,8 @@ public class App {
             }
         }
     }
+
+    //method untuk menampilkan struk
     private static void tampilkanStruk(Pelanggan pelanggan, Barang barang, int jumlahBeli, double totalBayar) {
         Date date = new Date();
         Date time = new Date();
